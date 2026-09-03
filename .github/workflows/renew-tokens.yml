@@ -1,0 +1,30 @@
+name: renew-tokens
+on:
+  schedule:
+    - cron: '23 3 * * *'
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  renew:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run encrypted rolling renew
+        env:
+          RENEW_ENCRYPTION_KEY: ${{ secrets.RENEW_ENCRYPTION_KEY }}
+          RENEW_DOMAIN: ${{ secrets.RENEW_DOMAIN }}
+        run: node _tools/renew/renew_tokens.js
+      - name: Commit encrypted tokens + roll log
+        run: |
+          git config user.name 'renew-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add captured_tokens_split/ _tools/renew/renew_roll.json
+          if git diff --cached --quiet; then echo 'no change'; exit 0; fi
+          git commit -m "chore(renew): rolling #${{ github.run_number }}"
+          git push

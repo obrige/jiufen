@@ -1,0 +1,15 @@
+{
+  "dataDir": "captured_tokens_split",
+  "fileGlob": "captured_tokens_\\d+.json",
+  "rollFile": "renew_roll.json",
+  "logKeepDays": 7,
+  "batchFiles": 6,
+  "concurrency": 5,
+  "minDelayMs": 800,
+  "maxDelayMs": 1500,
+  "maxRetries": 3,
+  "retryBackoffMs": 4000,
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) ielts-app Chrome/146.0.7680.188 Electron/41.3.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "acceptLanguage": "zh-CN,zh;q=0.9,en;q=0.8"
+}
