@@ -12,7 +12,7 @@ const UA_MANIFEST='https://static.'+DOMAIN+'/electron/stable/latest.yml';
 const key=crypto.keyFromPass(pass);
 const NOW=Date.now(); const DAY=86400*1000; const keepMs=(CFG.logKeepDays||7)*DAY;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms)); const randInt=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
-function httpsGet(url,timeout){ return new Promise((resolve)=>{ const u=new URL(url); const req=(u.protocol==='https:'?https:http).get(u,{headers:{'user-agent':CFG.userAgent}},res=>{ let d=''; res.on('data',c=>d+=c); res.on('end',()=>resolve(res.statusCode===200?d:'')); }); req.setTimeout(timeout,()=>{ try{req.destroy();}catch{}; resolve(''); }); req.on('error',()=>resolve('')); }); }
+function httpsGet(url,timeout=15000){ return new Promise((resolve)=>{ const u=new URL(url); const req=(u.protocol==='https:'?https:http).get(u,{headers:{'user-agent':CFG.userAgent}},res=>{ let d=''; res.on('data',c=>d+=c); res.on('end',()=>resolve(res.statusCode===200?d:'')); }); req.setTimeout(timeout,()=>{ try{req.destroy();}catch{}; resolve(''); }); req.on('error',()=>resolve('')); }); }
 let LIVE_UA=null;
 async function resolveUA(){
   if(LIVE_UA) return LIVE_UA;
